@@ -80,6 +80,28 @@
                     width: calc(100% - 20px);
                 }
             }
+            #MessageArea {
+                position: fixed;
+                top: 65px;
+                right: 10px;
+                min-width: 300px;
+                z-index: 100;
+            }
+            .messageBanner {
+                background-color: var(--color-secondary);
+                color: white;
+                border-radius: 5px;
+                outline: 2px solid var(--color-bg-bright);
+                transition: all 3s ease-in;
+                width: 100%;
+                p {
+                    padding: 10px;
+                }
+            }
+            .transparent {
+                filter: opacity(0.0);
+            }
+
             #CropperCanvas {
                 width: 500px;
                 height: 500px;
@@ -159,8 +181,7 @@
                 transition: all 0.5s ease-out allow-discrete;
             }
             .button:hover {
-                    box-shadow: 3px 3px 2px white;
-                    letter-spacing: .5px;
+                    background-color: var(--color-bg-bright);
                 }
             .buttonRow {
                 width: 100%;
@@ -179,6 +200,7 @@
                     <button type="submit" class="button" onclick="download()">Herunterladen</button>
                 </div>
             </div>
+            <div id="MessageArea"></div>
             <div id="LeftSidebar">
                 <div id="childForm">
                         <label for="childName">Name des Kindes</label>
@@ -268,21 +290,10 @@
         </div>
 
     <script>
-/** 
-
-*/
-    // $("#CropperImage")[0].addEventListener("transform", onCropperImageTransform)
-    $("#popupHide").addClass("hidden");
-    var image_num = "0";
-    $("#childName")[0].addEventListener("change", updateComposition);
-    updateComposition();
-    // let canvas = $("#ImageComposition")[0];
-    // const ctx = canvas.getContext("2d");
-    // const img = new Image();
-    // img.addEventListener("load", () => {
-    //     ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
-    // });
-    // img.src = "./presentation_template.png";
+        $("#popupHide").addClass("hidden");
+        var image_num = "0";
+        $("#childName")[0].addEventListener("change", updateComposition);
+        updateComposition();
 
         function showTutorial() {
             $("#tutorialHide").toggleClass("hidden");
@@ -373,7 +384,47 @@
             });
         }
 
+        function showMessage(msg) {
+            const id = "msg_" + Math.ceil(Math.random() * 100).toString();
+            $("#MessageArea").append(`
+                <div id="${id}" class="messageBanner">
+                    <p>${msg}</p>
+                </div>
+            `);
+            window.setTimeout(() => {
+                $("#" + id).addClass("transparent");
+            }, 4000);
+            window.setTimeout(() => {
+                $("#" + id).remove();
+            }, 7000); // wait time + fade out time
+        }
+
+        function missingInput() {
+            ret = false; // no missing content
+            let childName = $("#childName")[0].value?.trim();
+            if(!childName) {
+                showMessage("Bitte den Namen des Kindes angeben");
+                ret = true;
+            }
+            let childClass = $("#childClass")[0].value;
+            if(!childClass) {
+                showMessage("Bitte die Klasse des Kindes angeben");
+                ret = true;
+            }
+
+            for(let img = 1; img <= 3; img++) {
+                if($("#Image" + img)[0]?.files.length < 1) {
+                    showMessage(`Bitte ein Bild für Bereich ${img} hochladen.`);
+                    ret = true;
+                }
+            }
+
+            return ret;
+        }
+
         var download = function(){
+            if(missingInput()) {return;}
+
             let childName = $("#childName")[0].value;
             let childClass = $("#childClass")[0].value;
             var link = document.createElement('a');
