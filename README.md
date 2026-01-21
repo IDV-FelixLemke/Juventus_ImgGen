@@ -1,2 +1,3 @@
-# Juventus_ImgGen
-Image generator for Juventus 2026 presentation
+# Juventus 2026: Bildgenerator zum Festakt
+
+Um den Bildgenerator zu benutzen, folge bitte diesem Link: [https://idv-felixlemke.github.io/Juventus_ImgGen/src/]
