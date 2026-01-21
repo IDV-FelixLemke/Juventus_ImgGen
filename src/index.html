@@ -14,6 +14,10 @@
                 --color-secondary: rgb(0, 64, 64);
                 background-color: var(--color-bg);
             }
+            h1, h2, h3 {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
             cropper-canvas {
                 width:100%; 
                 height: 800px;
@@ -57,9 +61,11 @@
                 /* height: calc(100vh - 75px); */
                 display: flex;
                 flex-direction: column;
-                align-items: end;
                 gap: 10px;
                 border-radius: 5px;
+                h2 {
+                    margin: 1em;
+                }
 
             }
             #LeftSidebar {
@@ -80,6 +86,10 @@
                     width: calc(100% - 20px);
                 }
             }
+            #tutorialPopup {
+                align-items: start;
+            }
+
             #MessageArea {
                 position: fixed;
                 top: 65px;
@@ -235,16 +245,16 @@
             <div id="MainContent">
                     <div id="tutorialHide" class="popupHide">
                         <div id="tutorialPopup" class="popup">
-                            <h2>Anleitung</h2>
+                            <h3>Anleitung</h3>
                             <ol>
-                                <li>Auf der linken Seite alles ausfüllen:
+                                <li>Auf der linken Seite alle Informationen ausfüllen:
                                     <ul>
-                                        <li>Name und Klasse des Kindes</li>
-                                        <li>Bilder aus verschiedenen Altersabschnittes</li>
+                                        <li>Name und Klasse des Kindes.</li>
+                                        <li>Bilder aus verschiedenen Altersabschnitten des Kindes.</li>
                                     </ul>
                                 </li>
-                                <li>Kontrollieren, dass des Ergebnis im zentralen Bereich gut aussieht.</li>
-                                <li>Oben rechts auf &bdquo;Herunterladen&rdquo; klicken und das Bild speichern. Bitte <i>hierbei</i> nicht den vorgeschlagenen Namen änder.</li>
+                                <li>Kontrollieren, dass das Ergebnis im zentralen Bereich gut aussieht.</li>
+                                <li>Oben rechts auf <b>Herunterladen</b> klicken und das Bild speichern. Bitte <i>nicht</i> den vorgeschlagenen Namen ändern.</li>
                                 <li>Der gespeicherte Bild an unsere E-Mail <a href="mailto:juventusfest2026@gmail.com">	juventusfest2026@gmail.com</a> schicken.</li>
                             </ol>
                             <p>Danke für eure Mithilfe.</p>
@@ -285,6 +295,7 @@
                     </div>
                 <!-- <div id="ImageResults"></div> -->
 
+                <h2>Vorschau der Collage</h2>
                 <canvas id="ImageComposition" width="1920" height="1080"></canvas>
             </div>
         </div>
@@ -401,10 +412,10 @@
             `);
             window.setTimeout(() => {
                 $("#" + id).addClass("transparent");
-            }, 4000);
+            }, 3000);
             window.setTimeout(() => {
                 $("#" + id).remove();
-            }, 7000); // wait time + fade out time
+            }, 6000); // wait time + fade out time
         }
 
         function missingInput() {
