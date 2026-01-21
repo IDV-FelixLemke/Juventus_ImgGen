@@ -253,13 +253,13 @@
                                         <li>Bilder aus verschiedenen Altersabschnitten des Kindes.</li>
                                     </ul>
                                 </li>
-                                <li>Kontrollieren, dass das Ergebnis im zentralen Bereich gut aussieht.</li>
+                                <li>Bitte noch einmal kontrollieren, dass das Ergebnis in der Vorschau gut aussieht.</li>
                                 <li>Oben rechts auf <b>Herunterladen</b> klicken und das Bild speichern. Bitte <i>nicht</i> den vorgeschlagenen Namen ändern.</li>
-                                <li>Der gespeicherte Bild an unsere E-Mail <a href="mailto:juventusfest2026@gmail.com">	juventusfest2026@gmail.com</a> schicken.</li>
+                                <li>Das gespeicherte Bild an unsere E-Mail <a href="mailto:juventusfest2026@gmail.com">	juventusfest2026@gmail.com</a> schicken.</li>
                             </ol>
                             <p>Danke für eure Mithilfe.</p>
                             <h3>Hinweis</h3>
-                            <p>Auf dieser Seite werden keine Daten gespeichert. Wenn der Browser-Tab geschlossen oder neugeladen wird, ist der Fortschritt verloren.</p>
+                            <p>Auf dieser Seite werden keine Daten gespeichert. Wenn der Browser-Tab geschlossen oder neu geladen wird, ist der Fortschritt verloren.</p>
                             <div class="buttonRow">
                                 <button type="submit" class="button" onclick="$('#tutorialHide').addClass('hidden')">Anleitung schließen</button>
                             </div>
@@ -271,9 +271,9 @@
                                 <h3>Anleitung</h3>
                                 <ul>
                                     <li>Alles, was im Rahmen zu sehen ist, wird in das Bild übernommen.</li>
-                                    <li>Mit dem Mausrad kann das Bild gezoomt werden.</li>
+                                    <li>Mit dem Mausrad kann das Bild vergrößert/verkleinert werden.</li>
                                     <li>Das Bild kann mit der Maus verschoben werden, um einen anderen Ausschnitt festzulegen.</li>
-                                    <li>Stimmt der Ausschnitt? Dann mit &bdquo;Übernehmen&rdquo; bestätigen.</li>
+                                    <li>Stimmt der Ausschnitt? Dann bitte mit <b>Übernehmen</b> bestätigen.</li>
                                 </ul>
                             </div>
                             <cropper-canvas id="CropperCanvas" background width="660" height="660">
@@ -375,7 +375,8 @@
                     ctx.fillStyle = "rgba(20,60,20,0.9)"
                     let text = lines[i];
                     if(lines.length-1 === i) {
-                        ctx.font = "64px bold Georgia serif";
+                        ctx.font = "48px bold Georgia serif";
+                    } else {
                         text = text.toUpperCase();
                     }
                     ctx.fillText(text, 30 + i*20, 100 + (i * 90));
