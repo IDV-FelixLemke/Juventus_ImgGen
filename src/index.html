@@ -294,6 +294,13 @@
         var image_num = "0";
         $("#childName")[0].addEventListener("change", updateComposition);
         updateComposition();
+        clearImageUploader();
+
+        function clearImageUploader() {
+            for(let img = 1; img <= 3; img++) {
+                $("#Image" + img)[0].value = "";
+            }
+        }
 
         function showTutorial() {
             $("#tutorialHide").toggleClass("hidden");
@@ -304,6 +311,7 @@
             const file = $("#Image" + image_num)[0]?.files[0];
             if(!file) return;
             var reader = new FileReader();
+            $("#CropperSelection")[0].$reset();
             reader.addEventListener("load", () => {
                 $("#CropperImage")[0].src = reader.result;
                 $("#popupHide").removeClass("hidden");
