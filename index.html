@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Juventus 2026 - Bilderupload</title>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/cropperjs"></script>
+        <style>
+            body {
+                --color-bg: rgb(220, 250, 220);
+                --color-bg-bright: rgb(245, 255, 245);
+                --color-primary: rgb(107, 0, 0);
+                --color-secondary: rgb(0, 64, 64);
+                background-color: var(--color-bg);
+            }
+            cropper-canvas {
+                width:100%; 
+                height: 800px;
+            }
+            #ImageComposition {
+                width: 1000px;
+                height: 600px;
+                outline: 1px solid black;
+            }
+            #Header {
+                background-color: var(--color-bg-bright);
+                position: absolute;
+                top: 5px;
+                left:5px;
+                width: calc(100% - 10px);
+                outline: 1px solid #AAA;
+                height: 60px;
+                text-align: center;
+                display:flex;
+                align-items: center;
+                justify-content: space-between;
+                border-radius: 5px;
+                div {
+                    margin-right: 1em;
+                    display: flex;
+                    gap: 1em;
+                }
+                h1 {
+                    margin-left: 1em;
+                    color: var(--color-primary);
+                }
+                
+            }
+            #MainContent {
+                background-color: white;
+                position: absolute;
+                top: 70px;
+                right:5px;
+                width: calc(80% - 10px);
+                outline: 1px solid #AAA;
+                /* height: calc(100vh - 75px); */
+                display: flex;
+                flex-direction: column;
+                align-items: end;
+                gap: 10px;
+                border-radius: 5px;
+
+            }
+            #LeftSidebar {
+                background-color: var(--color-bg-bright);
+                border-radius: 5px;
+                position: absolute;
+                top: 70px;
+                left:5px;
+                width: calc(20% - 10px);
+                outline: 1px solid #AAA;
+                /* height: calc(100vh - 75px); */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                div {
+                    margin: 5px;
+                    width: calc(100% - 20px);
+                }
+            }
+            #CropperCanvas {
+                width: 500px;
+                height: 500px;
+            }
+            #CropperImage {
+                width: 100%;
+            }
+            .popup {
+                position: absolute;
+                transform: translate(-50%, -50%);
+                top: 50%;
+                left: 50%;
+                padding: 10px;
+                background-color: var(--color-bg);
+                outline: 1px solid white;
+                display: flex; 
+                align-items: center;
+                flex-direction: column;
+                gap: 10px;
+                box-shadow: 3px 3px 4px white, -3px -3px 4px white;
+            }
+            #ImageComposition {
+                width: calc(100% - 4em);
+                height: auto;
+                margin: 2em;
+                box-shadow: 4px 4px 6px var(--color-primary);
+            }
+            #CropperCanvas {
+                box-shadow: 4px 4px 6px var(--color-primary);
+                outline: 1px solid var(--color-primary);
+            }
+
+            #childForm {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                align-items: stretch;
+            }
+
+            .popupHide {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(4px);
+            }
+            .hidden {
+                display: none;
+            }
+
+            .uploadBox {
+                position: relative;
+                text-wrap-mode: wrap;
+                border: 1px solid black;
+                padding: 5px;
+                height: fit-content;
+                box-shadow: 2px 2px 2px var(--color-primary);
+                border-radius: 5px;
+                input {
+                    width: 100%;
+                }
+                .imagePreview {
+                    max-height: 20vh;
+                }
+            }
+            .button {
+                max-width: 20em;
+                font-size: large;
+                background: var(--color-bg);
+                outline: 1px solid var(--color-primary);
+                color: var(--color-primary);
+                padding: 0.5em;
+                cursor: pointer;
+                border-radius: 0.3em;
+                transition: all 0.5s ease-out allow-discrete;
+            }
+            .button:hover {
+                    box-shadow: 3px 3px 2px white;
+                    letter-spacing: .5px;
+                }
+            .buttonRow {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="Page">
+            <div id="Header">
+                <h1>Juventus 2026 - Bilderpräsentation zum Festakt</h1>
+                <div>
+                    <button type="submit" class="button" onclick="showTutorial()">Anleitung</button>
+                    <button type="submit" class="button" onclick="download()">Herunterladen</button>
+                </div>
+            </div>
+            <div id="LeftSidebar">
+                <div id="childForm">
+                        <label for="childName">Name des Kindes</label>
+                        <input type="text" id="childName">
+
+                        <label for="childClass">Klasse des Kindes</label>
+                        <select name="childClass" id="childClass">
+                            <option value="">--Bitte eine Klasse auswählen--</option>
+                            <option value="8a">8a</option>
+                            <option value="8b">8b</option>
+                            <option value="8c">8c</option>
+                            <option value="8d">8d</option>
+                        </select>
+                        <!-- <input type="text" id="childClass"> -->
+                </div>
+                <div class="uploadBox">
+                    <p>Bild 1: Kleinkind- oder Kindergartenalter</p>
+                    <input id="Image1" type="file" onchange="loadImage('1')">
+                    <canvas id="Image1_preview" width="660" height="660" class="imagePreview"></canvas>
+                </div>
+                <div class="uploadBox">
+                    <p>Bild 2: Grundschulzeit</p>
+                    <input id="Image2" type="file" onchange="loadImage('2')">
+                    <canvas id="Image2_preview" width="660" height="660" class="imagePreview"></canvas>
+                </div>
+                <div class="uploadBox">
+                    <p>Bild 3: Aktuelles Bild</p>
+                    <input id="Image3" type="file" onchange="loadImage('3')">
+                    <canvas id="Image3_preview" width="660" height="660" class="imagePreview"></canvas>
+                </div>
+            </div>
+            <div id="MainContent">
+                    <div id="tutorialHide" class="popupHide">
+                        <div id="tutorialPopup" class="popup">
+                            <h2>Anleitung</h2>
+                            <ol>
+                                <li>Auf der linken Seite alles ausfüllen:
+                                    <ul>
+                                        <li>Name und Klasse des Kindes</li>
+                                        <li>Bilder aus verschiedenen Altersabschnittes</li>
+                                    </ul>
+                                </li>
+                                <li>Kontrollieren, dass des Ergebnis im zentralen Bereich gut aussieht.</li>
+                                <li>Oben rechts auf &bdquo;Herunterladen&rdquo; klicken und das Bild speichern. Bitte <i>hierbei</i> nicht den vorgeschlagenen Namen änder.</li>
+                                <li>Der gespeicherte Bild an unsere E-Mail <a href="mailto:juventusfest2026@gmail.com">	juventusfest2026@gmail.com</a> schicken.</li>
+                            </ol>
+                            <p>Danke für eure Mithilfe.</p>
+                            <h3>Hinweis</h3>
+                            <p>Auf dieser Seite werden keine Daten gespeichert. Wenn der Browser-Tab geschlossen oder neugeladen wird, ist der Fortschritt verloren.</p>
+                            <div class="buttonRow">
+                                <button type="submit" class="button" onclick="$('#tutorialHide').addClass('hidden')">Anleitung schließen</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="popupHide" class="popupHide">
+                        <div id="CropperPopup" class="popup">
+                            <div>
+                                <h3>Anleitung</h3>
+                                <ul>
+                                    <li>Alles, was im Rahmen zu sehen ist, wird in das Bild übernommen.</li>
+                                    <li>Mit dem Mausrad kann das Bild gezoomt werden.</li>
+                                    <li>Das Bild kann mit der Maus verschoben werden, um einen anderen Ausschnitt festzulegen.</li>
+                                    <li>Stimmt der Ausschnitt? Dann mit &bdquo;Übernehmen&rdquo; bestätigen.</li>
+                                </ul>
+                            </div>
+                            <cropper-canvas id="CropperCanvas" background width="660" height="660">
+                                <cropper-image id="CropperImage" src="" initial-center-size="cover" alt="Picture selection" scalable translatable @transform="onCropperImageTransform"></cropper-image>
+                                <cropper-shade hidden></cropper-shade>
+                                <cropper-handle action="select" plain></cropper-handle>
+                                <cropper-crosshair hidden></cropper-crosshair>
+                                <cropper-selection hidden id="CropperSelection" initial-coverage="1.0" aspect-ratio="1">
+                                    <cropper-grid role="grid" hidden covered></cropper-grid>
+                                    <cropper-crosshair centered></cropper-crosshair>
+                                    <cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.0)"></cropper-handle>
+                                </cropper-selection>
+                            </cropper-canvas>
+                            <div class="buttonRow">
+                                <button type="submit" class="button" onclick="saveCrop()">Übernehmen</button>
+                                <button type="submit" class="button" onclick="$('#popupHide').addClass('hidden')">Abbrechen</button>
+                            </div>
+                        </div>
+                    </div>
+                <!-- <div id="ImageResults"></div> -->
+
+                <canvas id="ImageComposition" width="1920" height="1080"></canvas>
+            </div>
+        </div>
+
+    <script>
+/** 
+
+*/
+    // $("#CropperImage")[0].addEventListener("transform", onCropperImageTransform)
+    $("#popupHide").addClass("hidden");
+    var image_num = "0";
+    $("#childName")[0].addEventListener("change", updateComposition);
+    updateComposition();
+    // let canvas = $("#ImageComposition")[0];
+    // const ctx = canvas.getContext("2d");
+    // const img = new Image();
+    // img.addEventListener("load", () => {
+    //     ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+    // });
+    // img.src = "./presentation_template.png";
+
+        function showTutorial() {
+            $("#tutorialHide").toggleClass("hidden");
+        }
+
+        function loadImage(num) {
+            image_num = num;
+            const file = $("#Image" + image_num)[0]?.files[0];
+            if(!file) return;
+            var reader = new FileReader();
+            reader.addEventListener("load", () => {
+                $("#CropperImage")[0].src = reader.result;
+                $("#popupHide").removeClass("hidden");
+                $("#CropperImage")[0].addEventListener("transform", onCropperImageTransform)
+            });
+
+            reader.readAsDataURL(file);
+        }
+
+        function updateComposition() {
+            const img = new Image();
+
+            img.addEventListener("load", () => {
+                let canvas = $("#ImageComposition")[0];
+                const ctx = canvas.getContext("2d");
+
+                ctx.fillStyle = "rgb(245, 255, 245)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+                ctx.font = "48px bold Georgia serif";
+
+                const g = [
+                    {x: 10, y: 400},
+                    {x: 540, y: 10},
+                    {x: 1250, y: 10}
+                ];
+                const bw = 6;
+
+                const img1 = $("#Image1_preview")[0];
+                ctx.fillRect(g[0].x - bw, g[0].y - bw, img1.width + 2*bw, img1.height + 2*bw);
+                ctx.fillText("Bild 1", g[0].x + 20, g[0].y + 68);
+                ctx.drawImage(img1, 0, 0, img1.width, img1.height, g[0].x, g[0].y, 660, 660);
+                
+                const img2 = $("#Image2_preview")[0];
+                ctx.fillRect(g[1].x - bw, g[1].y - bw, img1.width + 2*bw, img1.height + 2*bw);
+                ctx.fillText("Bild 2", g[1].x + 20, g[1].y + 68);
+                ctx.drawImage(img2, 0, 0, img2.width, img2.height, g[1].x, g[1].y, 660, 660);
+                
+                const img3 = $("#Image3_preview")[0];
+                ctx.fillRect(g[2].x - bw, g[2].y - bw, img1.width + 2*bw, img1.height + 2*bw);
+                ctx.fillText("Bild 3", g[2].x + 20, g[2].y + 68);
+                ctx.drawImage(img3, 0, 0, img3.width, img3.height, g[2].x, g[2].y, 660, 660);
+
+                let childName = $("#childName")[0].value;
+                let lines = childName.split(" ");
+                lines = lines.filter((line) => line !== "");
+                for (let i = 0; i < lines.length; i++) {
+                    ctx.font = "72px bold Georgia serif";
+                    ctx.fillStyle = "rgba(20,60,20,0.9)"
+                    let text = lines[i];
+                    if(lines.length-1 === i) {
+                        ctx.font = "64px bold Georgia serif";
+                        text = text.toUpperCase();
+                    }
+                    ctx.fillText(text, 30 + i*20, 100 + (i * 90));
+                }
+                // ctx.fillText(childName, 40, 100, 660);
+
+                ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+
+
+                $("#popupHide").addClass("hidden");
+            })
+            img.src = "./presentation_template.png";
+        }
+
+        function saveCrop() {
+            $("#CropperSelection")[0].$toCanvas().then(res => {
+                // $("#ImageResults")[0].replaceChildren(res);
+
+                if(image_num == "0") return;
+                const prevName = "Image" + image_num + "_preview";
+                let previewC = $("#" + prevName)[0];
+                previewC.getContext("2d").drawImage(res, 0, 0, res.width, res.height, 0, 0, previewC.width, previewC.height);
+
+                updateComposition();
+            });
+        }
+
+        var download = function(){
+            let childName = $("#childName")[0].value;
+            let childClass = $("#childClass")[0].value;
+            var link = document.createElement('a');
+            link.download = childClass + '_' + childName + ".png";
+            link.href = document.getElementById('ImageComposition').toDataURL();
+            link.click();
+        }
+
+        function onCropperImageTransform(event) {
+            console.log("Transform");
+            const cropperCanvas = $("#CropperCanvas")[0];
+
+            if (!cropperCanvas) {
+                return;
+            }
+
+            const cropperImage = $("#CropperImage")[0];
+            const cropperCanvasRect = cropperCanvas.getBoundingClientRect();
+
+        // 1. Clone the cropper image.
+            const cropperImageClone = cropperImage.cloneNode();
+
+        // 2. Apply the new matrix to the cropper image clone.
+            cropperImageClone.style.transform = `matrix(${event.detail.matrix.join(', ')})`;
+
+        // 3. Make the cropper image clone invisible.
+            cropperImageClone.style.opacity = '0';
+
+        // 4. Append the cropper image clone to the cropper canvas.
+            cropperCanvas.appendChild(cropperImageClone);
+
+        // 5. Compute the boundaries of the cropper image clone.
+            const cropperImageRect = cropperImageClone.getBoundingClientRect();
+
+        // 6. Remove the cropper image clone.
+            cropperCanvas.removeChild(cropperImageClone);
+
+            if (
+                cropperImageRect.top > cropperCanvasRect.top
+                || cropperImageRect.right < cropperCanvasRect.right
+                || cropperImageRect.bottom < cropperCanvasRect.bottom
+                || cropperImageRect.left > cropperCanvasRect.left
+            ) {
+                event.preventDefault();
+            }
+        }
+    </script>
+    </body>
+</html>
