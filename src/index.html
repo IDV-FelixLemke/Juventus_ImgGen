@@ -328,6 +328,7 @@
                 const imgElement = `<cropper-image id="CropperImage" src="${reader.result}" initial-center-size="cover" alt="Picture selection" scalable translatable></cropper-image>`;
                 let newImg = $("#CropperImage").replaceWith(imgElement);
                 console.log(newImg);
+                $("#CropperImage")[0].$center("cover");
                 $("#CropperImage")[0].addEventListener("transform", onCropperImageTransform);
                 $("#popupHide").removeClass("hidden");
             });
